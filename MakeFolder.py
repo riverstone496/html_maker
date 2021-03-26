@@ -1,26 +1,47 @@
 import os,csv
 import shutil
+import re
 
 class Main:
     def __init__(self):
         if os.path.exists("./magazines") == False:
             os.mkdir("./magazines")
-        
+    
+        ########################################################################
+        #65号以降の読み込み
+        ########################################################################
         # csvファイルの読み込み
         csv_data = ReadCsv('sample.csv')
         data_list = csv_data.ReadCsv()
-
         # 1つの記事のフォルダを作成
         for article_data in data_list:
             make_folder = ArticleFolder(article_data)
             make_folder.MakeFolder()
+        print("1step done")
+
+        ########################################################################
+        # 65号以前の読み込み
+        ########################################################################
+        # csvファイルの読み込み
+        csv_data_2 = ReadCsv('sample2.csv')
+        data_list_2 = csv_data_2.ReadCsv()
+        # 1つの記事のフォルダを作成
+        for article_data in data_list_2:
+            make_folder_2 = ArticleFolder(article_data)
+            make_folder_2.MakeFolder()
 
 class ArticleFolder:
     def __init__(self,data):
         self.data = data
         self.folder_path = "./magazines/"+self.data[3][:-3]
+        self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
 
     def MakeFolder(self):
+        # PDFファイルふぁ存在しなかった場合中断
+        if os.path.exists(self.pdf_path) == False:
+            return
+
+        # 記事用のfolderが存在しなかった場合、新たにフォルダを作成
         if os.path.exists(self.folder_path) == False:
             os.mkdir(self.folder_path)
         
@@ -29,9 +50,8 @@ class ArticleFolder:
         html_maker.MakeHtml(self.folder_path+'/index.mdx')
 
         # PDFファイルのコピー
-        pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
         copy_path=self.folder_path+"/"+self.data[3]
-        shutil.copyfile(pdf_path,copy_path)
+        shutil.copyfile(self.pdf_path,copy_path)
 
 #もととなるcsvファイルの読み込み
 class ReadCsv:
@@ -41,7 +61,6 @@ class ReadCsv:
         self.data_path = path
     def ReadCsv(self):
         #csvファイルを開く
-        #ここでは読み込むcsvファイルはsample.csv
         f=open(self.data_path, encoding="utf-8_sig")
         reader = csv.reader(f)
 
@@ -52,9 +71,6 @@ class ReadCsv:
 class HtmlFile:
     def __init__(self,data):
         self.data = data
-    
-        if os.path.exists("./magazines") == False:
-            os.mkdir("./magazines")
 
     def MakeHtml(self,out_path):
         #もととなるhtmlファイルを開く
