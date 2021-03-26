@@ -43,10 +43,10 @@ class ArticleFolder:
         self.data = data
 
         if self.data[3][-4:]==".pdf":
-            self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
+            self.pdf_path = "./pdf/"+self.data[4].zfill(2)+"/"+self.data[3]
             self.folder_path = "./magazines/"+self.data[3][:-3]
         else:
-            self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]+".pdf"
+            self.pdf_path = "./pdf/"+self.data[4].zfill(2)+"/"+self.data[3]+".pdf"
             self.folder_path = "./magazines/"+self.data[3]
 
     def MakeFolder(self):
