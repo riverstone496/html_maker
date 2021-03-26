@@ -11,13 +11,14 @@ class Main:
         data_list = csv_data.ReadCsv()
 
         # 1つの記事のフォルダを作成
-        make_folder = ArticleFolder(data_list[1])
-        ArticleFolder.MakeFolder()
+        for article_data in data_list:
+            make_folder = ArticleFolder(article_data)
+            make_folder.MakeFolder()
 
 class ArticleFolder:
     def __init__(self,data):
         self.data = data
-        self.folder_path = "./magazines/"+self.data[3]
+        self.folder_path = "./magazines/"+self.data[3][:-3]
 
     def MakeFolder(self):
         if os.path.exists(self.folder_path) == False:
@@ -25,8 +26,12 @@ class ArticleFolder:
         
         # htmlファイルの作成
         html_maker = HtmlFile(self.data)
-        html_maker.MakeHtml(self.folder_path+'/test.html')
-    
+        html_maker.MakeHtml(self.folder_path+'/index.mdx')
+
+        # PDFファイルのコピー
+        pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
+        copy_path=self.folder_path+"/"+self.data[3]
+        shutil.copyfile(pdf_path,copy_path)
 
 #もととなるcsvファイルの読み込み
 class ReadCsv:
