@@ -4,7 +4,7 @@ category: "学院"
 vol: "号数"
 interviewee: "教授名"
 url: "研究室のURL"
-tags: 
+tags: []
 pdf: "パス"
 facephoto: ""
 career: ""
