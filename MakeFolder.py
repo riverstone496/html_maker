@@ -11,7 +11,7 @@ class Main:
         #65号以降の読み込み
         ########################################################################
         # csvファイルの読み込み
-        csv_data = ReadCsv('sample.csv')
+        csv_data = ReadCsv('sample3.csv')
         data_list = csv_data.ReadCsv()
 
         Adjuster = FileNameAdjustment(data_list)
@@ -106,8 +106,8 @@ class HtmlFile:
         text_mod = text_mod.replace("号数",self.data[4])
         text_mod = text_mod.replace("学院",self.data[5])
         
-        if len(self.data)>=7:
-            text_mod = text_mod.replace("研究室のURL",self.data[6])
+        if len(self.data)>=8:
+            text_mod = text_mod.replace("研究室のURL",self.data[7])
         else:
             text_mod = text_mod.replace("研究室のURL","")
         print(text_mod, file=out)
