@@ -6,7 +6,6 @@ interviewee: "教授名"
 url: "研究室のURL"
 tags: []
 pdf: "パス"
-facephoto: ""
 career: ""
-preface:"要約"
+preface: "要約"
 ---
