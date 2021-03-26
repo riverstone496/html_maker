@@ -13,6 +13,10 @@ class Main:
         # csvファイルの読み込み
         csv_data = ReadCsv('sample.csv')
         data_list = csv_data.ReadCsv()
+
+        Adjuster = FileNameAdjustment(data_list)
+        data_list = Adjuster.AdjustName()
+
         # 1つの記事のフォルダを作成
         for article_data in data_list:
             make_folder = ArticleFolder(article_data)
@@ -25,6 +29,10 @@ class Main:
         # csvファイルの読み込み
         csv_data_2 = ReadCsv('sample2.csv')
         data_list_2 = csv_data_2.ReadCsv()
+
+        Adjuster_2 = FileNameAdjustment(data_list_2)
+        data_list_2 = Adjuster_2.AdjustName()
+
         # 1つの記事のフォルダを作成
         for article_data in data_list_2:
             make_folder_2 = ArticleFolder(article_data)
@@ -33,11 +41,17 @@ class Main:
 class ArticleFolder:
     def __init__(self,data):
         self.data = data
-        self.folder_path = "./magazines/"+self.data[3][:-3]
-        self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
+
+        if self.data[3][-4:]==".pdf":
+            self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]
+            self.folder_path = "./magazines/"+self.data[3][:-3]
+        else:
+            self.pdf_path = "./pdf/"+self.data[4]+"/"+self.data[3]+".pdf"
+            self.folder_path = "./magazines/"+self.data[3]
 
     def MakeFolder(self):
-        # PDFファイルふぁ存在しなかった場合中断
+
+        # PDFファイルが存在しなかった場合中断
         if os.path.exists(self.pdf_path) == False:
             return
 
@@ -92,6 +106,18 @@ class HtmlFile:
         text_mod = text_mod.replace("号数",self.data[4])
         text_mod = text_mod.replace("学院",self.data[5])
         print(text_mod, file=out)
+
+class FileNameAdjustment:
+    def __init__(self,data_list):
+        self.data_list = data_list
+    
+    def AdjustName(self):
+        for i in range(len(self.data_list)):
+            data = self.data_list[i]
+            if data[3][-4:]!=".pdf":
+                pdf_path = data[3]+".pdf"
+                self.data_list[i][3] = pdf_path
+        return self.data_list
 
 if __name__ == '__main__':
     Main()
