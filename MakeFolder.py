@@ -11,7 +11,7 @@ class Main:
         #65号以降の読み込み
         ########################################################################
         # csvファイルの読み込み
-        csv_data = ReadCsv('sample3.csv')
+        csv_data = ReadCsv('sample.csv')
         data_list = csv_data.ReadCsv()
 
         Adjuster = FileNameAdjustment(data_list)
