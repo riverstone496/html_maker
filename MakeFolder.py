@@ -21,7 +21,7 @@ class Main:
         for article_data in data_list:
             make_folder = ArticleFolder(article_data)
             make_folder.MakeFolder()
-        print("1step done")
+        print("1st step done")
 
         ########################################################################
         # 65号以前の読み込み
@@ -37,6 +37,8 @@ class Main:
         for article_data in data_list_2:
             make_folder_2 = ArticleFolder(article_data)
             make_folder_2.MakeFolder()
+        
+        print("2nd step done")
 
 class ArticleFolder:
     def __init__(self,data):
@@ -79,7 +81,7 @@ class ReadCsv:
         reader = csv.reader(f)
 
         for row in reader:
-            self.data.append(row[0:8])
+            self.data.append(row[0:13])
         return self.data
 
 class HtmlFile:
@@ -110,6 +112,21 @@ class HtmlFile:
             text_mod = text_mod.replace("研究室のURL",self.data[6])
         else:
             text_mod = text_mod.replace("研究室のURL","")
+
+        #タグ付け
+        if len(self.data)>=12:
+            tag_string=""
+            for i in range(7,12):
+                if len(self.data[i]) >= 1:
+                    if i != 7:
+                        tag_string +=","
+                    tag_string += "\""+self.data[i]+"\""
+
+            text_mod = text_mod.replace("タグ",tag_string)
+
+        else:
+            text_mod = text_mod.replace("タグ","")
+
         print(text_mod, file=out)
 
 class FileNameAdjustment:
