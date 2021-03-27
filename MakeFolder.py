@@ -106,8 +106,8 @@ class HtmlFile:
         text_mod = text_mod.replace("号数",self.data[4])
         text_mod = text_mod.replace("学院",self.data[5])
         
-        if len(self.data)>=8:
-            text_mod = text_mod.replace("研究室のURL",self.data[7])
+        if len(self.data)>=7:
+            text_mod = text_mod.replace("研究室のURL",self.data[6])
         else:
             text_mod = text_mod.replace("研究室のURL","")
         print(text_mod, file=out)
